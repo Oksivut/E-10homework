@@ -22,7 +22,8 @@ public class Main {
                 new Product(5, "Toyota", 1000),
                 new Product(6, "Kia", 600),
                 new Product(7, "Volkswagen", 500),
-                new Product(8, "Acura", 3000)
+                new Product(8, "Acura", 3000),
+                new Product(9, "Acura", 3000)
 
         );
 
@@ -36,9 +37,10 @@ public class Main {
         System.out.println(products1);
         OptionalDouble products2 = averagePrice(products);
         System.out.println(products2);
-        Map<Integer, Object> products3= getMap (products);
+        Map<Integer, Object> products3 = getMap(products);
         System.out.println(products3);
-
+        Map<Product, Long> products4= getTwoMap(products);
+        System.out.println(products4);
 
     }
 
@@ -61,7 +63,7 @@ public class Main {
     public static OptionalDouble averagePrice(List<Product> products) {
         OptionalDouble optional = products.stream()
                 .map(product -> product.getPrice())
-                .mapToInt((product) -> (product)).average();
+                .mapToInt(product -> product).average();
         return optional;
 
     }
@@ -69,7 +71,15 @@ public class Main {
     public static Map<Integer, Object> getMap(List<Product> products) {
         Map<Integer, Object> products3 = products.stream()
                 .collect(Collectors.toMap((product) -> product.getId(), (product) -> "name:" + product.getName() + ", price:" + product.getPrice()));
-return products3;
+        return products3;
+
+    }
+
+    public static Map<Product, Long> getTwoMap(List<Product> products) {
+        Map<Product, Long> products4 = products.stream()
+                .collect(Collectors.toMap(product -> product, product -> products.stream()
+                        .filter(product1 -> product1.getName().equals(product.getName())).count()));
+        return products4;
 
     }
 }
