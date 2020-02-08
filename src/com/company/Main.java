@@ -39,7 +39,7 @@ public class Main {
         System.out.println(products2);
         Map<Integer, Object> products3 = getMap(products);
         System.out.println(products3);
-        Map<Product, Long> products4= getTwoMap(products);
+        Map<String, Long> products4 = getTwoMap(products);
         System.out.println(products4);
 
     }
@@ -75,11 +75,18 @@ public class Main {
 
     }
 
-    public static Map<Product, Long> getTwoMap(List<Product> products) {
-        Map<Product, Long> products4 = products.stream()
-                .collect(Collectors.toMap(product -> product, product -> products.stream()
-                        .filter(product1 -> product1.getName().equals(product.getName())).count()));
-        return products4;
+    public static Map<String, Long> getTwoMap(List<Product> products) {
+        Map<String, Long> products4 = products.stream()
+                .collect (Collectors.groupingBy(Product::getName, Collectors.counting()));
 
+        for(Map.Entry<String, Long> item : products4 .entrySet()){
+
+            System.out.println(item.getKey() + " - " + item.getValue());
+        }
+
+            return products4;
+
+
+        }
     }
-}
+
